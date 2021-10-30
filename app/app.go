@@ -20,7 +20,7 @@ func Start() {
 	router.HandleFunc("/customers/{customer_id:[0-9]+}", getCustomer).Methods(http.MethodGet)
 
 	// starting server
-	log.Fatal(http.ListenAndServe("localhost:8000", router))
+	log.Fatal(http.ListenAndServe(":0", router))
 }
 
 func createCustomer(w http.ResponseWriter, r *http.Request) {

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/hisamcode/banking/app"
+import "github.com/hisamcode/belajar-hexagonal/app"
 
 func main() {
 

@@ -1,4 +1,4 @@
-module github.com/hisamcode/banking
+module github.com/hisamcode/belajar-hexagonal-golang
 
 go 1.17
 
