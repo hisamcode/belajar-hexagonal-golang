@@ -1,6 +1,6 @@
 package main
 
-import "github.com/hisamcode/belajar-hexagonal/app"
+import "github.com/hisamcode/belajar-hexagonal-golang/app"
 
 func main() {
 

@@ -1,33 +1,25 @@
 package app
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+  "github.com/hisamcode/belajar-hexagonal-golang/service"
+  "github.com/hisamcode/belajar-hexagonal-golang/domain"
 )
 
 func Start() {
 
 	router := mux.NewRouter()
 
-	// define routes
-	router.HandleFunc("/greet", greet).Methods(http.MethodGet)
-	router.HandleFunc("/customers", getAllCustomers).Methods(http.MethodGet)
-	router.HandleFunc("/customers", createCustomer).Methods(http.MethodPost)
+  // wiring
+  // ch := CustomerHandlers{service: service.NewCustomerService(domain.NewCustomerRepositoryStub())}
+  ch := CustomerHandlers{service: service.NewCustomerService(domain.NewCustomerRepositoryDb())}
 
-	router.HandleFunc("/customers/{customer_id:[0-9]+}", getCustomer).Methods(http.MethodGet)
+	// define routes
+  router.HandleFunc("/customers", ch.getAllCustomers).Methods(http.MethodGet)
 
 	// starting server
 	log.Fatal(http.ListenAndServe(":0", router))
-}
-
-func createCustomer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "post request recieved")
-}
-
-func getCustomer(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	fmt.Fprint(w, vars["customer_id"])
 }

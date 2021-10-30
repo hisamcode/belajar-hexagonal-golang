@@ -3,8 +3,8 @@ package app
 import (
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
 	"net/http"
+  "github.com/hisamcode/belajar-hexagonal-golang/service"
 )
 
 type Customer struct {
@@ -13,16 +13,18 @@ type Customer struct {
 	Zipcode string `json:"zip_code" xml:"zipcode"`
 }
 
-func greet(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "hello world!!")
+type CustomerHandlers struct {
+  service service.CustomerService
 }
 
-func getAllCustomers(w http.ResponseWriter, r *http.Request) {
-	customers := []Customer{
-		{Name: "hisam", City: "Bogor", Zipcode: "16720"},
-		{Name: "maulana", City: "Bogor", Zipcode: "16721"},
-	}
+func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Request) {
+	// customers := []Customer{
+	// 	{Name: "hisam", City: "Bogorsssss", Zipcode: "16720"},
+	// 	{Name: "maulana", City: "Bogor", Zipcode: "16721"},
+	// }
 
+  customers, _ := ch.service.GetAllCustomer()
+ 
 	if r.Header.Get("Content-Type") == "application/xml" {
 		w.Header().Add("Content-Type", "application/xml")
 		xml.NewEncoder(w).Encode(customers)
