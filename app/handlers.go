@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"net/http"
+  "fmt"
   "github.com/hisamcode/belajar-hexagonal-golang/service"
+  "github.com/gorilla/mux"
 )
 
 type Customer struct {
@@ -18,11 +20,6 @@ type CustomerHandlers struct {
 }
 
 func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Request) {
-	// customers := []Customer{
-	// 	{Name: "hisam", City: "Bogorsssss", Zipcode: "16720"},
-	// 	{Name: "maulana", City: "Bogor", Zipcode: "16721"},
-	// }
-
   customers, _ := ch.service.GetAllCustomer()
  
 	if r.Header.Get("Content-Type") == "application/xml" {
@@ -32,4 +29,19 @@ func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Reque
 		w.Header().Add("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(customers)
 	}
+}
+
+func (ch *CustomerHandlers) getCustomer(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  id := vars["customer_id"]
+
+  customer, err := ch.service.GetCustomer(id)
+
+  if err != nil {
+    w.WriteHeader(http.StatusNotFound)
+    fmt.Fprint(w, err.Error())
+  } else {
+    w.Header().Add("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(customer)
+  }
 }
