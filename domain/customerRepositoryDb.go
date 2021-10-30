@@ -13,11 +13,19 @@ type CustomerRepositoryDb struct {
   client *sql.DB
 }
 
-func (d CustomerRepositoryDb) FindAll() ([]Customer, *errs.AppError) {
+func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError) {
 
-  findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
-
-  rows, err := d.client.Query(findAllSql)
+  var rows *sql.Rows
+  var err error
+  
+  if status == "" {
+    findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
+    rows, err = d.client.Query(findAllSql)
+  } else {
+    findAllSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where status = ?"
+    rows, err = d.client.Query(findAllSql, status)
+  }
+  
   if err != nil {
     log.Println("Error while querying customers table " + err.Error())
     return nil, errs.NewUnexpectedError("Unexpected database error")
