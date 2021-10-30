@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"net/http"
-  "fmt"
   "github.com/hisamcode/belajar-hexagonal-golang/service"
   "github.com/gorilla/mux"
 )
@@ -38,8 +37,9 @@ func (ch *CustomerHandlers) getCustomer(w http.ResponseWriter, r *http.Request) 
   customer, err := ch.service.GetCustomer(id)
 
   if err != nil {
+    w.Header().Add("Content-Type", "application/json")
     w.WriteHeader(err.Code)
-    fmt.Fprint(w, err.Message)
+    json.NewEncoder(w).Encode(err.AsMessage())
   } else {
     w.Header().Add("Content-Type", "application/json")
     json.NewEncoder(w).Encode(customer)

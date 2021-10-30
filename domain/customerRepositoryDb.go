@@ -4,10 +4,9 @@ import (
   "database/sql"
   "time"
   "log"
-  "errors"
 
   _ "github.com/go-sql-driver/mysql"
-  "github.com/hisamcode/belajar-hexagoanl-golang/errs"
+  "github.com/hisamcode/belajar-hexagonal-golang/errs"
 )
 
 type CustomerRepositoryDb struct {
