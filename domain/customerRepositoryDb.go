@@ -39,6 +39,10 @@ func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
   return customers, nil
 }
 
+func (d CustomerRepositoryDb) ById(id string) (*Customer, error) {
+  customerSql := "select customer_id, name, city, zipcode, date_of_birth, status from customers where customer_id = ?"
+}
+
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
     client, err := sql.Open("mysql", "uppxago76tywvdd8:xwYZw66BhKm0lIAkJKn4@tcp(bvjh6qwrrq8wqlmgcp8s-mysql.services.clever-cloud.com:3306)/bvjh6qwrrq8wqlmgcp8s")
     if err != nil {
