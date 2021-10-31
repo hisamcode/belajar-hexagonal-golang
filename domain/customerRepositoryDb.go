@@ -3,6 +3,8 @@ package domain
 import (
 	"database/sql"
 	"time"
+  "fmt"
+  "os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/hisamcode/belajar-hexagonal-golang/errs"
@@ -54,7 +56,14 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 }
 
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
-	client, err := sqlx.Open("mysql", "uppxago76tywvdd8:xwYZw66BhKm0lIAkJKn4@tcp(bvjh6qwrrq8wqlmgcp8s-mysql.services.clever-cloud.com:3306)/bvjh6qwrrq8wqlmgcp8s")
+  dbUser := os.Getenv("DB_USER")
+  dbPassword := os.Getenv("DB_PASSWORD")
+  dbAddress := os.Getenv("DB_ADDRESS")
+  dbPort := os.Getenv("DB_PORT")
+  dbName := os.Getenv("DB_NAME")
+  dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbAddress, dbPort, dbName)
+  client, err := sqlx.Open("mysql", dataSource)
+	// client, err := sqlx.Open("mysql", "uppxago76tywvdd8:xwYZw66BhKm0lIAkJKn4@tcp(bvjh6qwrrq8wqlmgcp8s-mysql.services.clever-cloud.com:3306)/bvjh6qwrrq8wqlmgcp8s")
 	if err != nil {
 		panic(err)
 	}
