@@ -1,10 +1,11 @@
 package domain
 
 import (
-  "strconv"
-  "github.com/hisamcode/belajar-hexagonal-golang/errs"
-  "github.com/hisamcode/belajar-hexagonal-golang/logger"
-  "github.com/jmoiron/sqlx"
+	"strconv"
+
+	"github.com/hisamcode/belajar-hexagonal-golang/errs"
+	"github.com/hisamcode/belajar-hexagonal-golang/logger"
+	"github.com/jmoiron/sqlx"
 )
 
 type AccountRepositoryDb struct {
