@@ -5,7 +5,11 @@ import (
 	"net/http"
   "fmt"
   "os"
+  "time"
+
 	"github.com/gorilla/mux"
+  "github.com/jmoiron/sqlx"
+
   "github.com/hisamcode/belajar-hexagonal-golang/service"
   "github.com/hisamcode/belajar-hexagonal-golang/domain"
   "github.com/hisamcode/belajar-hexagonal-golang/logger"
@@ -34,7 +38,11 @@ func Start() {
 
   // wiring
   // ch := CustomerHandlers{service: service.NewCustomerService(domain.NewCustomerRepositoryStub())}
-  ch := CustomerHandlers{service: service.NewCustomerService(domain.NewCustomerRepositoryDb())}
+  dbClient := getDbClient()
+  customerRepositoryDb := domain.NewCustomerRepositoryDb(dbClient)
+  // accountRepositoryDb := domain.NewAccountRepositoryDb(dbClient)
+
+  ch := CustomerHandlers{service: service.NewCustomerService(customerRepositoryDb)}
 
 	// define routes
   router.HandleFunc("/customers", ch.getAllCustomers).Methods(http.MethodGet)
@@ -49,4 +57,24 @@ func Start() {
   } else {
     log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", address, port), router))
   }
+}
+
+func getDbClient() *sqlx.DB {
+  dbUser := os.Getenv("DB_USER")
+  dbPassword := os.Getenv("DB_PASSWORD")
+  dbAddress := os.Getenv("DB_ADDRESS")
+  dbPort := os.Getenv("DB_PORT")
+  dbName := os.Getenv("DB_NAME")
+  dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbAddress, dbPort, dbName)
+  client, err := sqlx.Open("mysql", dataSource)
+	// client, err := sqlx.Open("mysql", "uppxago76tywvdd8:xwYZw66BhKm0lIAkJKn4@tcp(bvjh6qwrrq8wqlmgcp8s-mysql.services.clever-cloud.com:3306)/bvjh6qwrrq8wqlmgcp8s")
+	if err != nil {
+		panic(err)
+	}
+	// See "Important settings" section.
+	client.SetConnMaxLifetime(time.Minute * 3)
+	client.SetMaxOpenConns(10)
+	client.SetMaxIdleConns(10)
+
+  return client
 }
