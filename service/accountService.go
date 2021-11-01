@@ -1,6 +1,8 @@
 package service
 
 import (
+  "time"
+
   "github.com/hisamcode/belajar-hexagonal-golang/dto"
   "github.com/hisamcode/belajar-hexagonal-golang/errs"
   "github.com/hisamcode/belajar-hexagonal-golang/domain"
@@ -14,7 +16,9 @@ type DefaultAccountService struct {
   repo domain.AccountRepository
 }
 
-func (s DefaultAccountService) NewAccount (dto.NewAccountRequest) (*dto.newAccountResponse, errs.AppError) {
+func (s DefaultAccountService) NewAccount (req dto.NewAccountRequest) (*dto.NewAccountResponse, *errs.AppError) {
+  err := req.Validate()
+
   a := domain.Account{
     AccountId: "",
     CustomerId: req.CustomerId,
@@ -24,16 +28,15 @@ func (s DefaultAccountService) NewAccount (dto.NewAccountRequest) (*dto.newAccou
     Status: "1",
   }
   newAccount, err := s.repo.Save(a)
-
-  if err != nil {
-    return nil, err
-  }
+	if err != nil {
+		return nil, err
+	}
 
   response := newAccount.ToNewAccountResponseDto()
 
   return &response, nil
 }
 
-func NewAccountService(repo AccountRepository) DefaultAccountService {
+func NewAccountService(repo domain.AccountRepository) DefaultAccountService {
   return DefaultAccountService{repo}
 }

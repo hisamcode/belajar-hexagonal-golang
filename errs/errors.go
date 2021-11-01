@@ -28,3 +28,9 @@ func NewUnexpectedError(message string) *AppError {
     Code: http.StatusInternalServerError,
   }
 }
+
+func NewValidation(message string) *AppError {
+  return &AppError {
+    Message: message,
+  }
+}

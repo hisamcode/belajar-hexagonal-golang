@@ -3,8 +3,10 @@ package app
 import (
 	"encoding/json"
 	"net/http"
-  "github.com/hisamcode/belajar-hexagonal-golang/service"
+
   "github.com/gorilla/mux"
+
+  "github.com/hisamcode/belajar-hexagonal-golang/service"
 )
 
 type CustomerHandlers struct {

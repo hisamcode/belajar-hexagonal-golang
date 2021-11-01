@@ -7,7 +7,7 @@ import (
 
 type Account struct {
 	AccountId   string
-	CustumerId  string
+	CustomerId  string
 	OpeningDate string
 	AccountType string
 	Amount      float64
@@ -15,7 +15,7 @@ type Account struct {
 }
 
 type AccountRepository interface {
-  Save(Account) (*Account, errs.AppError)
+  Save(Account) (*Account, *errs.AppError)
 }
 
 func (a Account) ToNewAccountResponseDto() dto.NewAccountResponse {
