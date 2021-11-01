@@ -1,7 +1,7 @@
 package dto
 
 import (
-  "github.com/hisamcode/belajar-hexagonal-golang/errs"
+  // "github.com/hisamcode/belajar-hexagonal-golang/errs"
 )
 
 type NewAccountRequest struct {
@@ -10,9 +10,9 @@ type NewAccountRequest struct {
   Amount float64 `json:"amount"`
 }
 
-func (r NewAccountRequest) Validate() *errs.AppErro {
-  if (r.Amount < 5000) {
-    return errs.NewValidationError()
-  }
-}
+// func (r NewAccountRequest) Validate() *errs.AppError {
+//   if (r.Amount < 5000) {
+//     return errs.NewValidationError()
+//   }
+// }
 
